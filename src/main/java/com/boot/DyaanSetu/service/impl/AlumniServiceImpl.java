@@ -26,7 +26,7 @@ public class AlumniServiceImpl implements AlumniService {
 	
 	private final AlumniRepository alumniRepository;
 	private final AlumniLoginDetailsRepository alumniloginDetailsRepository;
-	private final BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
+	private final BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);	
 	
 	@Override
 	@Transactional

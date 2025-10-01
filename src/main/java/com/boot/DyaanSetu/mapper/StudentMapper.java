@@ -35,7 +35,9 @@ public class StudentMapper {
 				studentDto.getYearofPassing(),
 				studentDto.getContactNo(),
 				studentDto.getGender(),
-				studentDto.getBio()
+				studentDto.getBio(),
+				null
+				
 				);
 	}
 }

@@ -26,7 +26,6 @@ import com.boot.DyaanSetu.dto.StudentDto;
 import com.boot.DyaanSetu.entity.AdminLogin;
 import com.boot.DyaanSetu.exception.ResourceNotFoundException;
 import com.boot.DyaanSetu.repository.AdminLoginDetailRepository;
-import com.boot.DyaanSetu.repository.AdminRepository;
 import com.boot.DyaanSetu.service.impl.JwtService;
 
 import jakarta.validation.Valid;
@@ -34,7 +33,6 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -114,6 +112,7 @@ public class AdminController {
 	@GetMapping("/getAllStudents")
 	ResponseEntity<List<StudentDto>> getAllStudents(){
 		List<StudentDto> students= studentService.getAllStudents();
+		System.out.println("Fetched !!");
 		return ResponseEntity.ok(students);
 	}
 	
@@ -151,7 +150,7 @@ public class AdminController {
 	
 	@PutMapping("/update/{email}")
 	public ResponseEntity<String> updateAlumni(@PathVariable String email ,@RequestBody AlumniDto updatedAlumni) {
-		AlumniDto alumni= alumniService.updateAlumni(email, updatedAlumni);
+		alumniService.updateAlumni(email, updatedAlumni);
 		return ResponseEntity.ok("Employee Updated succesfully !!!!");
 	}
 	

@@ -2,10 +2,7 @@ package com.boot.DyaanSetu.ServiceLayer;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.boot.DyaanSetu.dto.AlumniDto;
-import com.boot.DyaanSetu.dto.SetPasswordDto;
 
 
 public interface AlumniService {

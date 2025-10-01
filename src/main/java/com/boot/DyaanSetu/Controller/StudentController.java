@@ -1,4 +1,4 @@
- package com.boot.DyaanSetu.Controller;
+package com.boot.DyaanSetu.Controller;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;

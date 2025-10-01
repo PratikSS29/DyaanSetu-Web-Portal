@@ -10,8 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Component;
 
-import com.boot.DyaanSetu.ServiceLayer.AlumniService;
-import com.boot.DyaanSetu.dto.AlumniDto;import com.boot.DyaanSetu.dto.StudentDto;
+import com.boot.DyaanSetu.dto.AlumniDto;
 
 @Component
 public class AlumniTempRegistrationCache {

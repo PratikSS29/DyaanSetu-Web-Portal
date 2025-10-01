@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
 
 import com.boot.DyaanSetu.dto.AdminDto;
-import com.boot.DyaanSetu.dto.StudentDto;
 
 @Component
 public class AdminTempRegistrationCache {
