@@ -10,7 +10,7 @@ import com.boot.DyaanSetu.entity.Student;
 
 public interface FileService {
 
-	public FileUpload saveFile(MultipartFile file , Student uploader , Group group) throws IOException;
+	public FileUpload saveFile(MultipartFile file ,String uploaderPrn , Long groupId) throws IOException;
 	
 	
 	
