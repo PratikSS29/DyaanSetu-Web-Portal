@@ -20,4 +20,6 @@ public interface StudentRepository extends JpaRepository<Student, String> {
 	List<Student> findAllByYearOfPassing(long yearOfPassing);
 	
 	List<Student> findAllBybranch(String branch);
+	
+
 }

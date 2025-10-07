@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,13 +24,16 @@ import com.boot.DyaanSetu.ServiceLayer.FileService;
 import com.boot.DyaanSetu.ServiceLayer.GroupService;
 import com.boot.DyaanSetu.ServiceLayer.InvitationService;
 import com.boot.DyaanSetu.ServiceLayer.StudentService;
+import com.boot.DyaanSetu.dto.GroupDto;
 import com.boot.DyaanSetu.dto.JwtResponse;
 import com.boot.DyaanSetu.dto.SetPasswordDto;
+import com.boot.DyaanSetu.dto.StudentDashboardDto;
 import com.boot.DyaanSetu.dto.StudentDto;
-import com.boot.DyaanSetu.entity.Group;
 import com.boot.DyaanSetu.entity.GroupInvitation;
+import com.boot.DyaanSetu.entity.Student;
 import com.boot.DyaanSetu.entity.StudentLogin;
 import com.boot.DyaanSetu.exception.ResourceNotFoundException;
+import com.boot.DyaanSetu.mapper.StudentMapper;
 import com.boot.DyaanSetu.repository.StudentLoginDetailsRepository;
 import com.boot.DyaanSetu.service.impl.JwtService;
 
@@ -99,10 +103,23 @@ public class StudentController {
 	    return ResponseEntity.ok(new JwtResponse(token));
 	}
 	
+	
+	@GetMapping("/dashboard")
+	public ResponseEntity<StudentDashboardDto> getDashboard(@RequestHeader("Authorization") String authHeader) {
+		
+		String token=authHeader.substring(7); //removes Bearer from token
+		String email=jwtService.extractUserName(token); //getStudent email from JWT
+		Student student=studentService.getStudentByEmail(email);
+		StudentDashboardDto dashboardDto=StudentMapper.toDashboardDto(student);
+		return ResponseEntity.ok(dashboardDto);
+		
+	}
+	
+	
 	@PostMapping("/create")
-	public ResponseEntity<Group> createGroup(@RequestParam String groupName,
+	public ResponseEntity<GroupDto> createGroup(@RequestParam String groupName,
 	                                         @RequestParam String leaderPrn) {
-	    Group group = groupService.createGroup(groupName, leaderPrn);
+	    GroupDto group = groupService.createGroup(groupName, leaderPrn);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(group);
 	}
 

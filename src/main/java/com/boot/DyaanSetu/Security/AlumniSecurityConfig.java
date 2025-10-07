@@ -49,10 +49,6 @@ public class AlumniSecurityConfig {
 //	}
     
     
-    
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-		return config.getAuthenticationManager();
-	}
 
     @Bean
     @Order(2)

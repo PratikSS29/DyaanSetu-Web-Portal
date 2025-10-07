@@ -27,8 +27,7 @@ public class StudentSecurityConfig {
 	@Autowired
     private final CombinedUserDetailsService studentuserDetailsService;
 
-//	@Autowired
-//	JwtStudentFilter jwtStudentFilter;
+
 	
 	@Autowired
 	JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -48,15 +47,6 @@ public class StudentSecurityConfig {
         return provider;
     }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder(12);
-//    }
-    
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-		return config.getAuthenticationManager();
-	}
 
     @Bean
     @Order(1)

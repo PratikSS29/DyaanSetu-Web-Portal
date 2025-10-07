@@ -1,5 +1,7 @@
 package com.boot.DyaanSetu.entity;
 
+import com.boot.DyaanSetu.dto.GroupDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

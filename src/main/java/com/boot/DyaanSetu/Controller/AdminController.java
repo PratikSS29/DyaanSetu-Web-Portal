@@ -16,15 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.boot.DyaanSetu.Config.AdminTempRegistrationCache;
 import com.boot.DyaanSetu.ServiceLayer.AdminService;
 import com.boot.DyaanSetu.ServiceLayer.AlumniService;
+import com.boot.DyaanSetu.ServiceLayer.GroupService;
 import com.boot.DyaanSetu.ServiceLayer.StudentService;
 import com.boot.DyaanSetu.dto.AdminDto;
 import com.boot.DyaanSetu.dto.AlumniDto;
 import com.boot.DyaanSetu.dto.DeleteStudentRequest;
+import com.boot.DyaanSetu.dto.GroupDto;
 import com.boot.DyaanSetu.dto.JwtResponse;
 import com.boot.DyaanSetu.dto.SetPasswordDto;
 import com.boot.DyaanSetu.dto.StudentDto;
 import com.boot.DyaanSetu.entity.AdminLogin;
+import com.boot.DyaanSetu.entity.Group;import com.boot.DyaanSetu.entity.Student;
 import com.boot.DyaanSetu.exception.ResourceNotFoundException;
+import com.boot.DyaanSetu.mapper.StudentMapper;
 import com.boot.DyaanSetu.repository.AdminLoginDetailRepository;
 import com.boot.DyaanSetu.service.impl.JwtService;
 
@@ -62,6 +66,9 @@ public class AdminController {
 	@Autowired
 	private AlumniService alumniService;
 	
+	@Autowired
+	private GroupService groupService;
+	
 	@PostMapping("/info")
 	public ResponseEntity<String> beginRegistration(@RequestBody AdminDto adminDto) {
 		
@@ -98,8 +105,9 @@ public class AdminController {
 	@GetMapping("/email/{email}")
 	public ResponseEntity<StudentDto> getStudentByEmail(@PathVariable String email) {
 		
-		StudentDto student=studentService.getStudentByEmail(email);
-		return ResponseEntity.ok(student);
+		Student student=studentService.getStudentByEmail(email);
+		StudentDto stu=StudentMapper.mapToStudentDto(student);
+		return ResponseEntity.ok(stu);
 		
 	}
 	
@@ -159,4 +167,22 @@ public class AdminController {
 		alumniService.deleteAlumniByEmail(email);
 		return ResponseEntity.ok("Alumni with email "+email+" deleted succesfully !!!");
 	}
+	
+	@GetMapping("/getGroup/id/{groupId}")
+	public ResponseEntity<GroupDto> getGroupById(@PathVariable Long groupId) {
+		
+		GroupDto group = groupService.getGroupByID(groupId);
+		
+		return ResponseEntity.ok(group);
+		
+	}
+	
+	@GetMapping("/getGroup/name/{groupName}")
+	public ResponseEntity<GroupDto> getgroupByName(@PathVariable String groupName){
+		
+		GroupDto group = groupService.getgroupByName(groupName);
+		return ResponseEntity.ok(group);
+	}
+	
+	
 }

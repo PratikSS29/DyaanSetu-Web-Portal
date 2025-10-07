@@ -2,6 +2,8 @@ package com.boot.DyaanSetu.entity;
 
 import org.apache.el.parser.AstFalse;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -70,5 +72,7 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
+    @JsonBackReference
     private Group group;
+    
 }

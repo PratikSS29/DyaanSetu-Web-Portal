@@ -25,54 +25,50 @@ import com.boot.DyaanSetu.service.impl.CombinedUserDetailsService;
 public class AdminSecurityConfig {
 
 	@Autowired
-	private final CombinedUserDetailsService userDetailsService;
+    private final CombinedUserDetailsService userDetailsService;
 	
 	@Autowired
-	JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	
-	public AdminSecurityConfig(CombinedUserDetailsService userDetailsService) {
-		this.userDetailsService=userDetailsService;
-	}
-	
-	public AuthenticationProvider adminAuthenticationProvider() {
-		DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
-		provider.setUserDetailsService(userDetailsService);
-		provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
-		
-		return provider;
-	}
-	
-	
-//	public PasswordEncoder passwordEncoder() {
-//		return new BCryptPasswordEncoder(12);
-//	}
-	
-	
-	@Order(3)
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-		return config.getAuthenticationManager();
-	}
-	
-	public SecurityFilterChain adminFilterChain(HttpSecurity httpSecurity) throws Exception {
-		
-		httpSecurity
-					.securityMatcher("/api/admin/**")
-					.csrf(csrf -> csrf.disable())
-					.authorizeHttpRequests(auth -> auth
-							.requestMatchers(
-									"/api/admin/login",
-									"/api/admin/info",
-									"/api/admin/set-password/**"
-									)
-							.permitAll()
-							.requestMatchers("/api/admin/**").hasRole("ADMIN")
-							.anyRequest().authenticated()
-							)
-					.httpBasic(Customizer.withDefaults())
-					.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-					.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-		
-		return httpSecurity.build();
-		
-	}
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+    public AdminSecurityConfig(CombinedUserDetailsService userDetailsService,
+                               JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.userDetailsService = userDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
+   
+    // Authentication provider for admin
+    @Bean
+    public AuthenticationProvider adminAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
+    }
+
+
+    // Security filter chain for admin APIs
+    @Bean
+    @Order(3)
+    public SecurityFilterChain adminFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .securityMatcher("/api/admin/**")  // apply only to admin APIs
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/api/admin/login",
+                                "/api/admin/info",
+                                "/api/admin/set-password/**"
+                        ).permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return httpSecurity.build();
+    }
 }

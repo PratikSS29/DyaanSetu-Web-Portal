@@ -49,11 +49,11 @@ public class StudentServiceImpl implements StudentService {
 	
 	
 	@Override
-	public StudentDto getStudentByEmail(String email) {
+	public Student getStudentByEmail(String email) {
 		Student student= studentRepository.findByEmail(email)
 											.orElseThrow(()-> new ResourceNotFoundException("Student with email "+email+" does not exists !!"));
 		
-		return StudentMapper.mapToStudentDto(student);
+		return student;
 	}
 
 	@Override
