@@ -117,27 +117,51 @@ public class StudentController {
 	
 	
 	@PostMapping("/create")
-	public ResponseEntity<GroupDto> createGroup(@RequestParam String groupName,
-	                                         @RequestParam String leaderPrn) {
+	public ResponseEntity<GroupDto> createGroup(@RequestHeader("Authorization") String authHeader ,
+												@RequestParam String groupName) {
+		
+		String token=authHeader.substring(7);
+		String email=jwtService.extractUserName(token);
+		
+		Student student=studentService.getStudentByEmail(email);
+		String leaderPrn=student.getPrnNo();
+		
 	    GroupDto group = groupService.createGroup(groupName, leaderPrn);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(group);
 	}
 
 	@PostMapping("/{groupId}/invite")
-	public ResponseEntity<GroupInvitation> inviteMember(@PathVariable Long groupId,
-	                                                    @RequestParam String leaderPrn,
+	public ResponseEntity<GroupInvitation> inviteMember( @RequestHeader("Authorization") String authHeader,
+														@PathVariable Long groupId,
 	                                                    @RequestParam String studentPrn) {
+		
+		String token=authHeader.substring(7);
+		String email=jwtService.extractUserName(token);
+		
+		Student leader=studentService.getStudentByEmail(email);
+		String leaderPrn=leader.getPrnNo();
+		
+		
 	    GroupInvitation invitation = groupService.inviteMember(groupId, leaderPrn, studentPrn);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(invitation);
 	}
 
 	@PostMapping("/invitations/{id}/respond")
-	public ResponseEntity<String> respondInvitation(@PathVariable Long id,
+	public ResponseEntity<String> respondInvitation(@RequestHeader("Authorization") String authHeader,
+													@PathVariable Long id,
 	                                                @RequestParam String action) {
-	    String response = invitationService.respondToInvitation(id, action);
+		
+		String token=authHeader.substring(7);
+		String email = jwtService.extractUserName(token);
+		
+		Student student=studentService.getStudentByEmail(email);
+		String studentPrn=student.getPrnNo();
+		
+	    String response = invitationService.respondToInvitation(id, action,studentPrn);
 	    return ResponseEntity.ok(response);
 	}
 
+	
 	@GetMapping("/invitations/{studentPrn}")
 	public ResponseEntity<List<GroupInvitation>> getInvitations(@PathVariable String studentPrn) {
 	    List<GroupInvitation> invitations = invitationService.getPendingInvitations(studentPrn);

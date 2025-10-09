@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.boot.DyaanSetu.ServiceLayer.GroupService;
 import com.boot.DyaanSetu.ServiceLayer.MentorService;
 import com.boot.DyaanSetu.dto.GroupDto;
+import com.boot.DyaanSetu.dto.MentorDashboardDto;
 import com.boot.DyaanSetu.entity.MentorLogin;
 
 @RestController
@@ -32,6 +33,12 @@ public class MentorController {
 		return ResponseEntity.ok("Login");
 	}
 	
+	@GetMapping("/dashboard")
+	public ResponseEntity<MentorDashboardDto> getDashboard() {
+		
+		return null;
+		
+	}
 	
 	@GetMapping("/getGroup/id/{groupId}")
 	public ResponseEntity<GroupDto> getGroupDetails(@PathVariable Long groupId) {
